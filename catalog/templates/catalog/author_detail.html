@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>
+    {{author.last_name}}, {{author.first_name}}
+</h1>
+<h3>
+    ({{ author.date_of_birth }} - {{author.date_of_death}})
+</h3>
+{% endblock %}

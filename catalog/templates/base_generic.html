@@ -19,7 +19,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2">
-            {% block sidebar %}
+            {% block sidebar_left %}
             <ul class="sidebar-nav">
                 <li><a href="{% url 'index' %}">Home</a></li>
                 <li><a href="{% url 'books' %}">All books</a></li>
@@ -57,7 +57,7 @@
                 {% endif %}
             </ul>
             {% endif %}
-            
+
             {% endblock %}
         </div>
         <div class="col-sm-10">

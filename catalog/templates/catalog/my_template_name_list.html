@@ -2,6 +2,7 @@
 {% load catalog_char_string %}
 
 {% block content %}
+    {% info_context as var_context %}
     <h1>
         Book List
     </h1>
@@ -10,6 +11,11 @@
         {% for book in my_book_list %}
         <li>
             <a href="{{book.get_absolute_url}}">{{book.title|initial_letter_filter}}</a>
+            <p>{{book.title|cut:" "}}</p>
+            <p>-------From current_time simple tag---------</p>
+            <p>{% current_time "%A, %B, %Y" %}</p>
+            <p>-------From info_context simple tag---------</p>
+            <p>{{ var_context }}</p>
             {{book.author}}
             {% if perms.catalog.can_mark_returned %}
                 <a href="{% url 'book-update' book.id %}">

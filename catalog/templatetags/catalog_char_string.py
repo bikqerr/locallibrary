@@ -1,3 +1,4 @@
+import datetime
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -19,3 +20,29 @@ def initial_letter_filter(text, autoescape=True):
 
     result = '<strong>%s</strong>%s' % (esc(first_word), esc(other_words))
     return mark_safe(result)
+
+
+@register.filter
+def cut(value, arg):
+    """
+    Removes all values of arg from the given string
+    """
+    return value.replace(arg, '')
+
+
+@register.filter(expected_localtime=True)
+def businesshours(value):
+    try:
+        return 9 <= value.hour < 17
+    except AttributeError:
+        return 'Error'
+
+
+@register.simple_tag
+def current_time(format_string):
+    return datetime.datetime.now().strftime(format_string)
+
+
+@register.simple_tag(takes_context=True)
+def info_context(context):
+    return context

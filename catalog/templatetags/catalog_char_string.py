@@ -46,3 +46,9 @@ def current_time(format_string):
 @register.simple_tag(takes_context=True)
 def info_context(context):
     return context
+
+
+@register.inclusion_tag('all_books_per_author_tag.html')
+def books_per_author(author):
+    books = author.book_set.all()
+    return {'books': books}

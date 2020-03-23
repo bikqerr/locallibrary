@@ -1,0 +1,23 @@
+<h1>
+    Book List of the author
+</h1>
+{% if books %}
+<ul style="border: 1px solid black">
+    {% for book in books %}
+    <li>
+        <a href="{{book.get_absolute_url}}">{{book.title}}</a>
+        {{book.author}}
+        {% if True %}
+        <a href="{% url 'book-update' book.id %}">
+            Update
+        </a>
+        <a href="{% url 'book-delete' book.id %}">
+            Delete
+        </a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>There are no books for this author in the library</p>
+{% endif %}

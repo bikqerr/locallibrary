@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load  catalog_char_string %}
 
 {% block content %}
 <h1>Author List</h1>
@@ -21,6 +22,7 @@
         </a>
         {% endif %}
     </li>
+    {% books_per_author author %}
     {% endfor %}
 </ul>
 {% else %}

@@ -2,9 +2,49 @@
 {% load  catalog_char_string %}
 
 {% block content %}
+<h2>cycle tag example</h2>
+<table>
+    <tr>
+        <td>{% cycle 'row1' 'row2' 'row3' as rowcolors silent %}</td>
+        {% cycle rowcolors %}
+        {% cycle rowcolors %}
+        <td>{{ rowcolors }}</td>
+    </tr>
+    <tr>
+        <td>{% cycle rowcolors %}</td>
+        <td>{{ rowcolors }}</td>
+    </tr>
+    <tr>
+        <td>{% cycle rowcolors %}</td>
+        <td>{{ rowcolors }}</td>
+    </tr>
+    <tr>
+        <td>{% cycle rowcolors %}</td>
+        <td>{{ rowcolors }}</td>
+    </tr>
+    <tr>
+        <td>{% cycle rowcolors %}</td>
+        <td>{{ rowcolors }}</td>
+    </tr>
+    <tr>
+        <td>{% cycle rowcolors %}</td>
+        <td>{{ rowcolors }}</td>
+    </tr>
+</table>
+<h2>end cycle tag example</h2>
+<h2>filter tag</h2>
+{% filter initial_letter_filter %}
+Fjala e pare e kesaj fjalie duhet te jete strong
+{% endfilter %}
+<h2>end filter tag</h2>
+{% with var1=False var2=0%}
+<h2>firstof tag</h2>
+{% firstof var1 var2 "fallback All value false" %}
+<h2>end firstof tag</h2>
+{% endwith %}
+
 <h1>Author List</h1>
 
-{% if my_author_list %}
 <ul>
     {% for author in my_author_list %}
     <li>
@@ -23,11 +63,10 @@
         {% endif %}
     </li>
     {% books_per_author author %}
+    {% empty %}
+    <li>There isn't any author</li>
     {% endfor %}
 </ul>
-{% else %}
-<p>There isn't any author</p>
-{% endif %}
 {% if perms.catalog.can_mark_returned %}
 <a href="{% url 'author-create' %}">
     <button class="btn btn-success" style="color: white">

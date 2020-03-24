@@ -52,3 +52,5 @@ def info_context(context):
 def books_per_author(author):
     books = author.book_set.all()
     return {'books': books}
+
+

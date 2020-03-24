@@ -48,9 +48,13 @@ def info_context(context):
     return context
 
 
-@register.inclusion_tag('all_books_per_author_tag.html')
+@register.inclusion_tag('tag_template/all_books_per_author_tag.html')
 def books_per_author(author):
     books = author.book_set.all()
     return {'books': books}
 
+
+@register.inclusion_tag('tag_template/list_borrowed_all_tag.html', takes_context=True)
+def list_borrowed_all(context):
+    return context
 

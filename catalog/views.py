@@ -91,7 +91,7 @@ class BookListView(LoginRequiredMixin, generic.ListView):
     # Get all books containing the character a
     queryset = Book.objects.filter(title__icontains='a')
     # Specify your own template name/location
-    template_name = 'catalog/my_template_name_list.html'
+    template_name = 'catalog/book_list.html'
     paginate_by = 10
 
 
@@ -130,7 +130,7 @@ class AuthorListView(generic.ListView):
     context_object_name = 'my_author_list'
     # Get all authors
     queryset = Author.objects.all()
-    template_name = 'catalog/all_author_list.html'
+    template_name = 'catalog/author_list.html'
     paginate_by = 10
 
 
@@ -157,6 +157,7 @@ class AuthorUpdate(UpdateView):
 class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
+    template_name = 'author_confirm_delete.html'
 
 
 class BookCreate(CreateView):

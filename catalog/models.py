@@ -19,27 +19,64 @@ class Genre(models.Model):
 
 
 class Language(models.Model):
-    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
-    name = models.CharField(
-        max_length=200,
-        help_text="Enter the book's natural language (e.g. Shqip, English, Italian etc.)"
-    )
+    original = models.CharField(max_length=200, default='null')
+    translatedIn = models.CharField(max_length=200, default='null', blank=True, null=True)
+
+    def __str__(self):
+        return 'Original: ' + self.original + ', Translated in: ' + self.translatedIn
+
+
+class Author(models.Model):
+    """
+    Model representing an author.
+    """
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField('Died', null=True, blank=True)
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
+    def get_absolute_url(self):
+        return reverse('author-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return f'{self.last_name}  {self.first_name}'
+
+
+class ScanInventory(models.Model):
+    """
+    Info for tha scan process(work and payments).
+    """
+
+
+#     TODO Create this class
+
+
+class PublishHouse(models.Model):
+    """"""
+    name = models.CharField(max_length=150)
 
     def __str__(self):
         return self.name
 
 
 class Book(models.Model):
-    """
-    Model representing a book (but not a specific copy of book).
-    """
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, null=True, blank=True)
+    covers_img = models.ImageField(upload_to='img/covers', default='/img/covers/defaultCoversImg.png')
+    sub_title = models.CharField(max_length=500, null=True, blank=True)
+    original_title = models.CharField(max_length=300, null=True, blank=True, default='null')
 
     # Foreign Key used because Book can have one author, but authors can have multiple books
     # Author as a string rather than a object because it hasn't been declared yet in the file
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
-
-    summary = models.TextField(max_length=1000, help_text='Enter e brief description of the book')
+    author = models.ManyToManyField(Author, related_name='author', blank=True)
+    translate = models.ManyToManyField(Author, related_name='translate', blank=True)
+    curator = models.ManyToManyField(Author, related_name='curator', blank=True)
+    summary = models.TextField(max_length=1000, help_text='Enter e brief description of the book', null=True,
+                               blank=True)
+    # From italian COLLANA
+    series = models.CharField(max_length=300, null=True, blank=True)
     isbn = models.CharField(
         'ISBN',
         max_length=13,
@@ -47,8 +84,9 @@ class Book(models.Model):
     )
 
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
-    genre = models.ManyToManyField(Genre, help_text='Select a genre for this book.')
-    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
+    genre = models.ManyToManyField(Genre, help_text='Select a genre for this book.', blank=True)
+    language = models.ForeignKey('Language', on_delete=models.DO_NOTHING, null=True, blank=True, default='null')
+    publishHouse = models.ManyToManyField(PublishHouse)
 
     def display_genre(self):
         """
@@ -56,8 +94,7 @@ class Book(models.Model):
         """
         return ', '.join(genre.name for genre in self.genre.all())
 
-    # the short description is displayed as name of the header column
-    # of the display_genre
+    # the short description is the header of the returned table
     display_genre.short_description = 'Genre'
 
     def __str__(self):
@@ -112,22 +149,3 @@ class BookInstance(models.Model):
 
     def __str__(self):
         return f'{self.id} ({self.book.title})'
-
-
-class Author(models.Model):
-    """
-    Model representing an author.
-    """
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField(null=True, blank=True)
-    date_of_death = models.DateField('Died', null=True, blank=True)
-
-    class Meta:
-        ordering = ['last_name', 'first_name']
-
-    def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
-
-    def __str__(self):
-        return f'{self.last_name}, {self.first_name}'

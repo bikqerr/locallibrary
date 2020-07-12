@@ -1,0 +1,48 @@
+{% extends "base_generic.html" %}
+{% load catalog_char_string static %}
+
+{% block content %}
+    <h1>
+        Book List
+    </h1>
+    {% if my_book_list %}
+        <ul class="row">
+            {% for book in my_book_list %}
+                <li class="card col-3">
+                    <img class="card-img-top" src="{{book.covers_img.url}}" alt="Kopertina">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+                        </h3>
+
+                        <ul class="list-group list-group-flush">
+                            {% for author in book.author.all %}
+                                <li class="list-group-item">
+                                    {{ author.first_name }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% if perms.catalog.can_mark_returned %}
+                            <a class="card-link" href="{% url 'book-update' book.id %}">
+                                Update
+                            </a>
+                            <a class="card-link" href="{% url 'book-delete' book.id %}">
+                                Delete
+                            </a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no books in the library</p>
+    {% endif %}
+    {% if perms.catalog.can_mark_returned %}
+        <a href="{% url 'book-create' %}">
+            <button class="btn btn-success" style="color: white">
+                ADD NEW BOOK
+            </button>
+        </a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+.sidebar {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+/*
+Outdent cap treatment is set without any vertical correction -
+Works OK in FF3, but cross-browser consistency will require further adjustment.
+Paragraphs set with ½ lead boundary, justified
+*/
+
+.title-page{
+    text-align: center;
+    font-size: 2.0em;
+}
+
+.a-card-header {
+    font-size: 1.4em;
+}
+
+.p-outend-cap {
+font-size: 1.4em;
+line-height: 2em;
+padding: 0 0 0 0;
+white-space: pre-line;
+text-align: center;
+}
+.p-outend-cap:first-line {
+font-weight: 100;
+}
+.p-outend-cap:first-letter {
+font-size: 2.5em;
+line-height: 1em;
+font-weight: 600;
+float: left;
+}
+
+.a-button {
+    background-color: #1e429a;
+    color: white !important;
+    width: 100% !important;
+
+    font-size: 1.3em;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+
+    padding: 10px 29px;
+    margin-bottom: 10px;
+
+    position: relative;
+}
+
+.full-name-tag-a {
+
+}

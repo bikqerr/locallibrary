@@ -1,0 +1,37 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Author List</h1>
+    <div class="container-fluid">
+        <ul class="row">
+            {% for author in my_author_list %}
+                    <div class="col-5">
+                        <li class="card mb-3 text-center" style="max-width: 540px">
+                            <div class="card-header">
+                                <a class="a-card-header" href="{{ author.get_absolute_url }}">
+                                    {{ author.last_name }},
+                                    {{ author.first_name }}
+                                </a>
+                            </div>
+                            <div class="card-body" style="padding-top: 0 !important;">
+                                <p class="p-outend-cap">
+                                    ({{ author.date_of_birth }} - {{ author.date_of_death }})
+                                </p>
+                                <a href="{% url 'author-update' author.id %}" class="btn btn-primary">UPDATE</a>
+                                <a href="{% url 'author-delete' author.id %}" class="btn btn-primary">DELETE</a>
+                            </div>
+                        </li>
+                    </div>
+            {% empty %}
+                <li>There isn't any author</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if perms.catalog.can_mark_returned %}
+        <a href="{% url 'author-create' %}">
+            <button class="btn btn-success" style="color: white">
+                ADD NEW AUTHOR
+            </button>
+        </a>
+    {% endif %}
+{% endblock %}
